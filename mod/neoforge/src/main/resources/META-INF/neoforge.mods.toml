@@ -1,0 +1,30 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "CC0-1.0"
+issueTrackerURL = "https://github.com/256Arts/Minecraft-Letter-Banners/issues"
+
+[[mods]]
+modId = "letterbanners"
+version = "${version}"
+displayName = "Letter Banners"
+authors = "256 Arts Developer"
+description = "Alphabet banners built from vanilla banner patterns. Adds /letterbanner, which opens the picker dialog or spells a whole word in one go."
+displayURL = "https://github.com/256Arts/Minecraft-Letter-Banners"
+
+# Custom click actions are picked up by a mixin, the same one the Fabric jar uses.
+[[mixins]]
+config = "letterbanners.mixins.json"
+
+[[dependencies.letterbanners]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.letterbanners]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"

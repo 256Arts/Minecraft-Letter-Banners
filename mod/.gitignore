@@ -1,0 +1,4 @@
+# Mod build output
+.gradle/
+build/
+run/

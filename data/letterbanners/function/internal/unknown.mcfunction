@@ -1,0 +1,1 @@
+$tellraw @s [{"text":"[Letter Banners] ","color":"gold"},{"text":"No design for ","color":"red"},{"text":"\"$(letter)\"","color":"white"},{"text":". Use A-Z, 0-9, a symbol or a space.","color":"red"}]

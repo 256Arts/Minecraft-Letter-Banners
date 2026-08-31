@@ -1,0 +1,24 @@
+plugins {
+	id 'net.neoforged.moddev' version "${moddev_version}"
+}
+
+neoForge {
+	version = project.neoforge_version
+
+	// ModDevGradle compiles against Mojang mappings, which is what the shared
+	// sources in common/ are already written in, so nothing is remapped.
+	runs {
+		client {
+			client()
+		}
+		server {
+			server()
+		}
+	}
+
+	mods {
+		letterbanners {
+			sourceSet sourceSets.main
+		}
+	}
+}

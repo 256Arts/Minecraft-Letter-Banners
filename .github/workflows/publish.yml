@@ -1,0 +1,137 @@
+name: Publish
+
+# Pushing a v<version> tag builds both mod jars and the data pack and ships them
+# to GitHub Releases, Modrinth and CurseForge. A platform is skipped when its id
+# or token is missing, so the workflow works even before those projects exist.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Gradle itself runs on this JDK; the foojay resolver fetches the JDK 25
+      # toolchain the mod is compiled against.
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Read mod properties
+        id: properties
+        run: |
+          version=$(grep -m1 '^version=' mod/gradle.properties | cut -d= -f2-)
+          minecraft=$(grep -m1 '^minecraft_version=' mod/gradle.properties | cut -d= -f2-)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "minecraft=$minecraft" >> "$GITHUB_OUTPUT"
+
+      - name: Check the tag matches the mod version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="${{ steps.properties.outputs.version }}"
+          if [ "$tag" != "$version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match version=$version in mod/gradle.properties" >&2
+            exit 1
+          fi
+
+      # Builds the Fabric and the NeoForge jar, each into its own build/libs.
+      - name: Build the mod
+        working-directory: mod
+        run: ./gradlew build --no-daemon
+
+      # The data pack is shipped as its own zip too, for players installing it
+      # into a world folder rather than running the mod.
+      - name: Zip the data pack
+        run: |
+          mkdir -p dist
+          zip -r "dist/letter-banners-datapack-${{ steps.properties.outputs.version }}.zip" \
+            pack.mcmeta data -x '*.DS_Store'
+
+      # One GitHub release holding everything. Modrinth and CurseForge get a
+      # version per loader instead, since only the Fabric jar depends on Fabric
+      # API, so no token is handed to the steps below.
+      - name: Publish the GitHub release
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-tag: ${{ github.ref_name }}
+          github-generate-changelog: true
+
+          files: |
+            mod/fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+            mod/neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            dist/letter-banners-datapack-*.zip
+
+          name: Letter Banners ${{ steps.properties.outputs.version }}
+          version: ${{ steps.properties.outputs.version }}
+          version-type: release
+
+      - name: Publish the Fabric jar
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          files: mod/fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+
+          name: Letter Banners ${{ steps.properties.outputs.version }} (Fabric)
+          version: ${{ steps.properties.outputs.version }}+fabric
+          version-type: release
+
+          loaders: fabric
+          game-versions: ${{ steps.properties.outputs.minecraft }}
+          java: 25
+
+          # fabric.mod.json lists fabric-command-api-v2, which is not a project
+          # of its own on either platform, so the dependency is spelled out here.
+          dependencies: |
+            fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}
+
+      - name: Publish the NeoForge jar
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          files: mod/neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
+
+          name: Letter Banners ${{ steps.properties.outputs.version }} (NeoForge)
+          version: ${{ steps.properties.outputs.version }}+neoforge
+          version-type: release
+
+          loaders: neoforge
+          game-versions: ${{ steps.properties.outputs.minecraft }}
+          java: 25
+
+      - name: Publish the data pack
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          files: dist/letter-banners-datapack-*.zip
+
+          name: Letter Banners ${{ steps.properties.outputs.version }} (Data Pack)
+          version: ${{ steps.properties.outputs.version }}+datapack
+          version-type: release
+
+          loaders: datapack
+          game-versions: ${{ steps.properties.outputs.minecraft }}

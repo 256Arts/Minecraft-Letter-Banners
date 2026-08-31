@@ -1,0 +1,66 @@
+// The two loader projects compile the same sources: everything but the entry
+// point is plain Minecraft code, so `common/` is added to both source sets
+// rather than built as a project of its own.
+subprojects {
+	apply plugin: 'java'
+
+	base {
+		// Both loaders produce a jar in their own build/libs, so the loader is
+		// part of the name to keep them apart once they are side by side in a
+		// release.
+		archivesName = "letter-banners-${project.name}"
+	}
+
+	sourceSets.main.java.srcDir rootProject.file('common/src/main/java')
+	sourceSets.main.resources.srcDir rootProject.file('common/src/main/resources')
+
+	// The data pack lives at the repository root so it can also be installed on
+	// its own. Both jars bundle that same copy, which the loader serves as a
+	// built-in data pack, so mod users never install the data pack by hand.
+	def dataPackDir = rootProject.file('../data')
+
+	processResources {
+		def manifestProperties = [
+			version: project.version,
+			minecraft_version: project.minecraft_version,
+			minecraft_version_range: project.minecraft_version_range,
+			loader_version: project.loader_version,
+			neoforge_version: project.neoforge_version
+		]
+		inputs.properties manifestProperties
+
+		filesMatching(['fabric.mod.json', 'META-INF/neoforge.mods.toml']) {
+			expand manifestProperties
+		}
+
+		// pack.mcmeta is deliberately left out: both loaders write one matching
+		// whatever version is running, so the bundled pack never trips a pack
+		// format check.
+		from(dataPackDir) {
+			into 'data'
+
+			// The mod builds its own dialog in Java, so the data pack's dialog and
+			// the function that opens it are both replaced: see LetterBannerDialogs
+			// and common/src/main/resources for the menu function that takes their
+			// place.
+			exclude 'letterbanners/dialog/letter_banner.json'
+			exclude 'letterbanners/function/menu.mcfunction'
+		}
+	}
+
+	jar {
+		// The license lives at the repository root, next to the data pack it covers.
+		from(rootProject.file('../LICENSE'))
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		it.options.release = 25
+	}
+
+	java {
+		withSourcesJar()
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(25)
+		}
+	}
+}

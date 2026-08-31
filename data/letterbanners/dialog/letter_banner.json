@@ -1,0 +1,643 @@
+{
+  "type": "minecraft:multi_action",
+  "title": {
+    "text": "Letter Banners"
+  },
+  "external_title": {
+    "text": "Letter Banners"
+  },
+  "can_close_with_escape": true,
+  "pause": false,
+  "after_action": "close",
+  "body": [
+    {
+      "type": "minecraft:plain_message",
+      "contents": {
+        "text": "Type letters (A-Z), digits (0-9), symbols and spaces, pick your colors, and one banner per character is added to your inventory.",
+        "color": "gray"
+      },
+      "width": 300
+    }
+  ],
+  "inputs": [
+    {
+      "type": "minecraft:text",
+      "key": "text",
+      "label": {
+        "text": "Text"
+      },
+      "width": 200,
+      "max_length": 32,
+      "initial": "A"
+    },
+    {
+      "type": "minecraft:single_option",
+      "key": "fg",
+      "label": {
+        "text": "Text Color"
+      },
+      "width": 200,
+      "options": [
+        {
+          "id": "white",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#F9FFFE"
+              },
+              {
+                "translate": "color.minecraft.white"
+              }
+            ]
+          }
+        },
+        {
+          "id": "light_gray",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#9D9D97"
+              },
+              {
+                "translate": "color.minecraft.light_gray"
+              }
+            ]
+          }
+        },
+        {
+          "id": "gray",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#474F52"
+              },
+              {
+                "translate": "color.minecraft.gray"
+              }
+            ]
+          }
+        },
+        {
+          "id": "black",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#1D1D21"
+              },
+              {
+                "translate": "color.minecraft.black"
+              }
+            ]
+          },
+          "initial": true
+        },
+        {
+          "id": "brown",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#835432"
+              },
+              {
+                "translate": "color.minecraft.brown"
+              }
+            ]
+          }
+        },
+        {
+          "id": "red",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#B02E26"
+              },
+              {
+                "translate": "color.minecraft.red"
+              }
+            ]
+          }
+        },
+        {
+          "id": "orange",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#F9801D"
+              },
+              {
+                "translate": "color.minecraft.orange"
+              }
+            ]
+          }
+        },
+        {
+          "id": "yellow",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#FED83D"
+              },
+              {
+                "translate": "color.minecraft.yellow"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lime",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#80C71F"
+              },
+              {
+                "translate": "color.minecraft.lime"
+              }
+            ]
+          }
+        },
+        {
+          "id": "green",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#5E7C16"
+              },
+              {
+                "translate": "color.minecraft.green"
+              }
+            ]
+          }
+        },
+        {
+          "id": "cyan",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#169C9C"
+              },
+              {
+                "translate": "color.minecraft.cyan"
+              }
+            ]
+          }
+        },
+        {
+          "id": "light_blue",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#3AB3DA"
+              },
+              {
+                "translate": "color.minecraft.light_blue"
+              }
+            ]
+          }
+        },
+        {
+          "id": "blue",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#3C44AA"
+              },
+              {
+                "translate": "color.minecraft.blue"
+              }
+            ]
+          }
+        },
+        {
+          "id": "purple",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#8932B8"
+              },
+              {
+                "translate": "color.minecraft.purple"
+              }
+            ]
+          }
+        },
+        {
+          "id": "magenta",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#C74EBD"
+              },
+              {
+                "translate": "color.minecraft.magenta"
+              }
+            ]
+          }
+        },
+        {
+          "id": "pink",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#F38BAA"
+              },
+              {
+                "translate": "color.minecraft.pink"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "minecraft:single_option",
+      "key": "bg",
+      "label": {
+        "text": "Background Color"
+      },
+      "width": 200,
+      "options": [
+        {
+          "id": "white",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#F9FFFE"
+              },
+              {
+                "translate": "color.minecraft.white"
+              }
+            ]
+          },
+          "initial": true
+        },
+        {
+          "id": "light_gray",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#9D9D97"
+              },
+              {
+                "translate": "color.minecraft.light_gray"
+              }
+            ]
+          }
+        },
+        {
+          "id": "gray",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#474F52"
+              },
+              {
+                "translate": "color.minecraft.gray"
+              }
+            ]
+          }
+        },
+        {
+          "id": "black",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#1D1D21"
+              },
+              {
+                "translate": "color.minecraft.black"
+              }
+            ]
+          }
+        },
+        {
+          "id": "brown",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#835432"
+              },
+              {
+                "translate": "color.minecraft.brown"
+              }
+            ]
+          }
+        },
+        {
+          "id": "red",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#B02E26"
+              },
+              {
+                "translate": "color.minecraft.red"
+              }
+            ]
+          }
+        },
+        {
+          "id": "orange",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#F9801D"
+              },
+              {
+                "translate": "color.minecraft.orange"
+              }
+            ]
+          }
+        },
+        {
+          "id": "yellow",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#FED83D"
+              },
+              {
+                "translate": "color.minecraft.yellow"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lime",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#80C71F"
+              },
+              {
+                "translate": "color.minecraft.lime"
+              }
+            ]
+          }
+        },
+        {
+          "id": "green",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#5E7C16"
+              },
+              {
+                "translate": "color.minecraft.green"
+              }
+            ]
+          }
+        },
+        {
+          "id": "cyan",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#169C9C"
+              },
+              {
+                "translate": "color.minecraft.cyan"
+              }
+            ]
+          }
+        },
+        {
+          "id": "light_blue",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#3AB3DA"
+              },
+              {
+                "translate": "color.minecraft.light_blue"
+              }
+            ]
+          }
+        },
+        {
+          "id": "blue",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#3C44AA"
+              },
+              {
+                "translate": "color.minecraft.blue"
+              }
+            ]
+          }
+        },
+        {
+          "id": "purple",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#8932B8"
+              },
+              {
+                "translate": "color.minecraft.purple"
+              }
+            ]
+          }
+        },
+        {
+          "id": "magenta",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#C74EBD"
+              },
+              {
+                "translate": "color.minecraft.magenta"
+              }
+            ]
+          }
+        },
+        {
+          "id": "pink",
+          "display": {
+            "text": "",
+            "extra": [
+              {
+                "text": "\u25a0 ",
+                "color": "#F38BAA"
+              },
+              {
+                "translate": "color.minecraft.pink"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "minecraft:single_option",
+      "key": "size",
+      "label": {
+        "text": "Font Size"
+      },
+      "width": 200,
+      "options": [
+        {
+          "id": "large",
+          "display": {
+            "text": "Large"
+          },
+          "initial": true
+        },
+        {
+          "id": "small",
+          "display": {
+            "text": "Small"
+          }
+        }
+      ]
+    },
+    {
+      "type": "minecraft:single_option",
+      "key": "fade",
+      "label": {
+        "text": "Fade"
+      },
+      "width": 200,
+      "options": [
+        {
+          "id": "none",
+          "display": {
+            "text": "None"
+          },
+          "initial": true
+        },
+        {
+          "id": "top",
+          "display": {
+            "text": "Top"
+          }
+        },
+        {
+          "id": "bottom",
+          "display": {
+            "text": "Bottom"
+          }
+        }
+      ]
+    }
+  ],
+  "columns": 3,
+  "actions": [
+    {
+      "label": {
+        "text": "Make A-Z"
+      },
+      "tooltip": {
+        "text": "All Letters (A-Z). One banner per character, 26 in all, in the colors picked above."
+      },
+      "width": 98,
+      "action": {
+        "type": "minecraft:dynamic/run_command",
+        "template": "function letterbanners:sets/letters {fg:\"$(fg)\",bg:\"$(bg)\",fade:\"$(fade)\",size:\"$(size)\"}"
+      }
+    },
+    {
+      "label": {
+        "text": "Make 0-9"
+      },
+      "tooltip": {
+        "text": "All Digits (0-9). One banner per character, 10 in all, in the colors picked above."
+      },
+      "width": 98,
+      "action": {
+        "type": "minecraft:dynamic/run_command",
+        "template": "function letterbanners:sets/digits {fg:\"$(fg)\",bg:\"$(bg)\",fade:\"$(fade)\",size:\"$(size)\"}"
+      }
+    },
+    {
+      "label": {
+        "text": "Make Symbols"
+      },
+      "tooltip": {
+        "text": "All Symbols. One banner per character, 20 in all, in the colors picked above."
+      },
+      "width": 98,
+      "action": {
+        "type": "minecraft:dynamic/run_command",
+        "template": "function letterbanners:sets/symbols {fg:\"$(fg)\",bg:\"$(bg)\",fade:\"$(fade)\",size:\"$(size)\"}"
+      }
+    },
+    {
+      "label": {
+        "text": "Make Banners"
+      },
+      "tooltip": {
+        "text": "One banner per character. The dialog closes once they are given."
+      },
+      "width": 200,
+      "action": {
+        "type": "minecraft:dynamic/run_command",
+        "template": "function letterbanners:submit {text:\"$(text)\",fg:\"$(fg)\",bg:\"$(bg)\",fade:\"$(fade)\",size:\"$(size)\"}"
+      }
+    }
+  ]
+}
