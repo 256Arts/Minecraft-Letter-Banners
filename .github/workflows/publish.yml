@@ -59,7 +59,7 @@ jobs:
         run: |
           mkdir -p dist
           zip -r "dist/letter-banners-datapack-${{ steps.properties.outputs.version }}.zip" \
-            pack.mcmeta data -x '*.DS_Store'
+            pack.mcmeta LICENSE data -x '*.DS_Store'
 
       # One GitHub release holding everything. Modrinth and CurseForge get a
       # version per loader instead, since only the Fabric jar depends on Fabric
