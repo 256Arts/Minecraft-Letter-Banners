@@ -69,9 +69,9 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   make one Modrinth/CurseForge version per download (`+fabric`, `+neoforge`,
   `+datapack` suffixes, and no GitHub token so they do not touch the release),
   because a version carries one loader list and one dependency list and only the
-  Fabric jar needs `fabric-api`. The `+datapack` step is Modrinth-only. That dependency is declared in the workflow
+  Fabric jar needs `fabric-api`. That dependency is declared in the workflow
   rather than read from `fabric.mod.json`, whose `fabric-command-api-v2` is not a
-  project on either platform.
+  project on either platform. The `+datapack` step is Modrinth-only.
 - Four mc-publish rules the split has to keep obeying. One: never widen a
   version's `loaders`, and never put the zip and a jar in the same version —
   Modrinth runs every validator whose loader the version declares over every file
