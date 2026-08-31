@@ -2,7 +2,12 @@ name: Publish
 
 # Pushing a v<version> tag builds both mod jars and the data pack and ships them
 # to GitHub Releases, Modrinth and CurseForge. A platform is skipped when its id
-# or token is missing, so the workflow works even before those projects exist.
+# or token is missing, so the workflow works even before those projects exist —
+# but only because each token below is gated on its id. Handed a token and no id,
+# mc-publish does not skip the platform: it guesses a slug from the mod metadata
+# and fails the run with "Cannot access CurseForge project ... by its slug".
+# The tokens are organization secrets, so they are set in every repo whether or
+# not this one has projects yet.
 on:
   push:
     tags:
@@ -60,7 +65,7 @@ jobs:
       # version per loader instead, since only the Fabric jar depends on Fabric
       # API, so no token is handed to the steps below.
       - name: Publish the GitHub release
-        uses: Kir-Antipov/mc-publish@v3.3.1
+        uses: Kira-NT/mc-publish@v3.3.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-tag: ${{ github.ref_name }}
@@ -76,13 +81,13 @@ jobs:
           version-type: release
 
       - name: Publish the Fabric jar
-        uses: Kir-Antipov/mc-publish@v3.3.1
+        uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-token: ${{ vars.MODRINTH_ID != '' && secrets.MODRINTH_TOKEN || '' }}
 
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-token: ${{ vars.CURSEFORGE_ID != '' && secrets.CURSEFORGE_TOKEN || '' }}
 
           files: mod/fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
 
@@ -100,13 +105,13 @@ jobs:
             fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}
 
       - name: Publish the NeoForge jar
-        uses: Kir-Antipov/mc-publish@v3.3.1
+        uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-token: ${{ vars.MODRINTH_ID != '' && secrets.MODRINTH_TOKEN || '' }}
 
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-token: ${{ vars.CURSEFORGE_ID != '' && secrets.CURSEFORGE_TOKEN || '' }}
 
           files: mod/neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
 
@@ -119,13 +124,13 @@ jobs:
           java: 25
 
       - name: Publish the data pack
-        uses: Kir-Antipov/mc-publish@v3.3.1
+        uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-token: ${{ vars.MODRINTH_ID != '' && secrets.MODRINTH_TOKEN || '' }}
 
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-token: ${{ vars.CURSEFORGE_ID != '' && secrets.CURSEFORGE_TOKEN || '' }}
 
           files: dist/letter-banners-datapack-*.zip
 
@@ -133,5 +138,15 @@ jobs:
           version: ${{ steps.properties.outputs.version }}+datapack
           version-type: release
 
+          # Keep this version's loader list to datapack alone, and keep the jars
+          # out of it. Modrinth runs every validator whose loader the version
+          # declares over every file whose extension it matches, and its NeoForge
+          # validator takes .zip as well as .jar — so a zip in a version that also
+          # said neoforge would be rejected for having no neoforge.mods.toml.
           loaders: datapack
           game-versions: ${{ steps.properties.outputs.minecraft }}
+
+          # A bare zip has no manifest to infer this from. It is one flag value,
+          # not a list: a client/server block list fails with
+          # 'Cannot convert "environment" to "LoaderEnvironmentType"'.
+          environment: both

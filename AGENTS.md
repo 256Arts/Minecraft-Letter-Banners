@@ -69,6 +69,18 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   Fabric jar needs `fabric-api`. That dependency is declared in the workflow
   rather than read from `fabric.mod.json`, whose `fabric-command-api-v2` is not a
   project on either platform.
+- Three mc-publish rules the split has to keep obeying. One: never widen a
+  version's `loaders`, and never put the zip and a jar in the same version —
+  Modrinth runs every validator whose loader the version declares over every file
+  whose extension matches, and its NeoForge validator takes `.zip` as well as
+  `.jar`, so a zip alongside `neoforge` is rejected for having no
+  `neoforge.mods.toml`. Two: `environment` is a single flag value (`both`), not a
+  block list, or the run dies on `Cannot convert "environment" to
+  "LoaderEnvironmentType"`; the data pack step needs it spelled out because a bare
+  zip has no manifest to infer it from. Three: each platform's token is passed
+  only when its id variable is set, because mc-publish skips a platform with no
+  token but guesses a slug — and then fails — when it has a token and no id. The
+  tokens are organization secrets, so every repo has them.
 - The data pack's dialog can only run a command, which the client guards with a
   "run a command?" screen, and being a static file it cannot show what the player
   has picked -- so its colors are cycle buttons labelled with a coloured square

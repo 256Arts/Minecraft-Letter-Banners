@@ -137,15 +137,26 @@ CurseForge version per download (`<version>+fabric`, `+neoforge`, `+datapack`),
 since only the Fabric jar depends on Fabric API. The tag has to match `version`
 in `mod/gradle.properties` or the workflow stops before building.
 
-Modrinth and CurseForge are each opt-in — either is skipped unless both of its
-settings are present, so the workflow already works with none of them set up. To
-turn one on, add its repository variable and secret under **Settings → Secrets
-and variables → Actions**:
+Modrinth and CurseForge are each opt-in — the workflow hands a platform its
+token only when its id is set, so it works with neither project created yet. To
+turn one on, add its repository variable under **Settings → Secrets and
+variables → Actions**; the tokens are organization secrets and are already in
+place:
 
 | Platform | Variable | Secret |
 | --- | --- | --- |
 | Modrinth | `MODRINTH_ID` (project id) | `MODRINTH_TOKEN` (PAT with **Create versions**) |
 | CurseForge | `CURSEFORGE_ID` (project id) | `CURSEFORGE_TOKEN` (API token) |
+
+That gating is load-bearing, not decoration. Given a token and no id, mc-publish
+does not skip the platform — it guesses a project slug from the mod metadata and
+fails the run with `Cannot access CurseForge project "letterbanners" by its
+slug`.
+
+The three platform steps run one after another, and each one publishes as it
+goes. If a later step fails, the earlier uploads have already happened, so a
+re-run would upload them a second time — delete the versions that did land
+before tagging again.
 
 ## License
 
