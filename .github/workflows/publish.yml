@@ -63,7 +63,8 @@ jobs:
 
       # One GitHub release holding everything. Modrinth and CurseForge get a
       # version per loader instead, since only the Fabric jar depends on Fabric
-      # API, so no token is handed to the steps below.
+      # API, so no token is handed to the steps below. The data pack goes to
+      # Modrinth alone.
       - name: Publish the GitHub release
         uses: Kira-NT/mc-publish@v3.3.1
         with:
@@ -123,14 +124,16 @@ jobs:
           game-versions: ${{ steps.properties.outputs.minecraft }}
           java: 25
 
+      # Modrinth only. CurseForge's modloader group is Forge/Fabric/NeoForge/Quilt
+      # with no data pack tag, and mc-publish drops the environment and Java tags
+      # from a file whose loaders match none of them — leaving CurseForge to reject
+      # the upload with 'You must select at least one version from the environment
+      # group of versions'. CurseForge users get the data pack inside either jar.
       - name: Publish the data pack
         uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ vars.MODRINTH_ID != '' && secrets.MODRINTH_TOKEN || '' }}
-
-          curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ vars.CURSEFORGE_ID != '' && secrets.CURSEFORGE_TOKEN || '' }}
 
           files: dist/letter-banners-datapack-*.zip
 

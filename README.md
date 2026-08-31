@@ -137,6 +137,10 @@ CurseForge version per download (`<version>+fabric`, `+neoforge`, `+datapack`),
 since only the Fabric jar depends on Fabric API. The tag has to match `version`
 in `mod/gradle.properties` or the workflow stops before building.
 
+The `+datapack` version goes to Modrinth only. CurseForge tags every file with a
+modloader — Forge, Fabric, NeoForge or Quilt — and has none for data packs, so it
+rejects the zip. CurseForge users get the data pack inside either jar.
+
 Modrinth and CurseForge are each opt-in — the workflow hands a platform its
 token only when its id is set, so it works with neither project created yet. To
 turn one on, add its repository variable under **Settings → Secrets and
