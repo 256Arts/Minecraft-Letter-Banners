@@ -62,6 +62,9 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   builds both jars, zips `pack.mcmeta` + `data/` beside them, and mc-publish ships
   all three to GitHub Releases, Modrinth and CurseForge. Version and game versions
   are read from `mod/gradle.properties`, and the tag has to match `version` there.
+  Running the workflow by hand (`workflow_dispatch`) publishes the data pack alone
+  -- every other step is gated on `github.event_name == 'push'` -- so a release
+  whose data pack step failed can be finished without re-uploading the rest.
   One mc-publish step makes the GitHub release with every file; the three after it
   make one Modrinth/CurseForge version per download (`+fabric`, `+neoforge`,
   `+datapack` suffixes, and no GitHub token so they do not touch the release),
