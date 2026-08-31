@@ -8,10 +8,17 @@ name: Publish
 # and fails the run with "Cannot access CurseForge project ... by its slug".
 # The tokens are organization secrets, so they are set in every repo whether or
 # not this one has projects yet.
+#
+# Running the workflow by hand instead (Actions -> Publish -> Run workflow)
+# publishes the data pack and nothing else, at whatever version
+# mod/gradle.properties currently names. That is the recovery path for a release
+# whose data pack step failed on its own: every other step has already published,
+# and re-running them would upload a second copy.
 on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -40,6 +47,7 @@ jobs:
           echo "minecraft=$minecraft" >> "$GITHUB_OUTPUT"
 
       - name: Check the tag matches the mod version
+        if: github.event_name == 'push'
         run: |
           tag="${GITHUB_REF_NAME#v}"
           version="${{ steps.properties.outputs.version }}"
@@ -50,6 +58,7 @@ jobs:
 
       # Builds the Fabric and the NeoForge jar, each into its own build/libs.
       - name: Build the mod
+        if: github.event_name == 'push'
         working-directory: mod
         run: ./gradlew build --no-daemon
 
@@ -66,6 +75,7 @@ jobs:
       # API, so no token is handed to the steps below. The data pack goes to
       # Modrinth alone.
       - name: Publish the GitHub release
+        if: github.event_name == 'push'
         uses: Kira-NT/mc-publish@v3.3.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -82,6 +92,7 @@ jobs:
           version-type: release
 
       - name: Publish the Fabric jar
+        if: github.event_name == 'push'
         uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
@@ -106,6 +117,7 @@ jobs:
             fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}
 
       - name: Publish the NeoForge jar
+        if: github.event_name == 'push'
         uses: Kira-NT/mc-publish@v3.3.1
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}

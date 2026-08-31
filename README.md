@@ -160,7 +160,9 @@ slug`.
 The three platform steps run one after another, and each one publishes as it
 goes. If a later step fails, the earlier uploads have already happened, so a
 re-run would upload them a second time — delete the versions that did land
-before tagging again.
+before tagging again. For the common case where only the data pack step failed,
+run the workflow by hand instead (**Actions → Publish → Run workflow**): a manual
+run publishes the data pack and nothing else.
 
 ## License
 
