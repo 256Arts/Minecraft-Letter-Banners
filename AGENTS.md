@@ -47,6 +47,11 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   a matching one) and adds `/letterbanner`, which calls `letterbanners:create` per
   character. Build both with `cd mod && ./gradlew build`; versions in
   `mod/gradle.properties`.
+- `install-in-modrinth.sh [profile] [loader]` builds one loader's jar and drops it
+  into a local Modrinth App profile's `mods/` (defaults `Latest Fabric` and
+  `fabric`), clearing older `letter-banners-*.jar` copies of either loader first.
+  macOS only; it is the `Install in Modrinth` Conductor run script in
+  `.conductor/settings.toml`.
 - The mod is multi-loader without Architectury: `mod/common/src/main` is not a
   Gradle project, it is a source directory both `mod/fabric` and `mod/neoforge`
   add to their own source set (see the `subprojects` block in `mod/build.gradle`,

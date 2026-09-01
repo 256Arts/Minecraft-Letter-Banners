@@ -1,0 +1,10 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+[scripts]
+run_mode = "concurrent"
+
+[scripts.run.Install-in-Modrinth]
+command = "sh install-in-modrinth.sh"
+available_in = [ "local" ]
+default = true
+icon = "package-plus"
