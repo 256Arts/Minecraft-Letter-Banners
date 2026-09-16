@@ -14,7 +14,8 @@ pluginManagement {
 }
 
 plugins {
-	// Lets Gradle fetch the JDK the mod builds against, so no JDK 25 install is needed.
+	// Lets Gradle fetch the JDK the mod builds against, and the one the daemon runs
+	// on (see gradle/gradle-daemon-jvm.properties), so no JDK 25 install is needed.
 	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 

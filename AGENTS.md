@@ -37,6 +37,10 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   are drawn for exactly that crop.
 - Targets 1.21.6+ (dialogs). Keep `pack.mcmeta` covering old `pack_format` and
   1.21.9+ `min_format`/`max_format`.
+- Backwards compatibility is not a constraint: every release stays up on GitHub,
+  Modrinth and CurseForge, so a player on an older Minecraft version downloads an
+  older build. Update to the newest version outright -- no version checks, no
+  compatibility shims, no keeping a deprecated path alive.
 - `letterbanners:create` builds one banner and is the shared entry point;
   `submit` spells the dialog's whole text and plays one sound at the end.
   `internal/spell` peels one character off at a time and recurses -- macro
@@ -46,7 +50,13 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   pulls `../data` into each jar; `pack.mcmeta` is left out so the loader generates
   a matching one) and adds `/letterbanner`, which calls `letterbanners:create` per
   character. Build both with `cd mod && ./gradlew build`; versions in
-  `mod/gradle.properties`.
+  `mod/gradle.properties`. Loom 1.18 refuses to load on anything older than a
+  JDK 25, so the Gradle **daemon** needs one too, not just the compile toolchain:
+  `mod/gradle/gradle-daemon-jvm.properties` pins it to 25 and carries the foojay
+  download URLs, so Gradle fetches its own daemon JVM and `JAVA_HOME` does not
+  matter. Regenerate that file with `./gradlew updateDaemonJvm --jvm-version=<n>`
+  -- but only from a JVM that can already configure the build, since the task
+  configures every project first.
 - `install-in-modrinth.sh [profile] [loader]` builds one loader's jar and drops it
   into a local Modrinth App profile's `mods/` (defaults `Latest Fabric` and
   `fabric`), clearing older `letter-banners-*.jar` copies of either loader first.

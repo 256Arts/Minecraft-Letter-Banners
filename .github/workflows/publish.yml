@@ -29,12 +29,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # Gradle itself runs on this JDK; the foojay resolver fetches the JDK 25
-      # toolchain the mod is compiled against.
+      # Only starts the wrapper. gradle/gradle-daemon-jvm.properties makes Gradle
+      # provision the JDK 25 its daemon runs on (Loom 1.18 will not load on an
+      # older JVM) and the foojay resolver fetches the compile toolchain, so this
+      # version is not load-bearing -- it just saves one download by matching.
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 25
 
       - uses: gradle/actions/setup-gradle@v5
 

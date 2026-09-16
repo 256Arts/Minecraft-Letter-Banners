@@ -74,7 +74,8 @@ that shows which dye is currently chosen, rather than from the data pack's cycle
 buttons. Installing the data pack by hand on top of the mod puts the
 command-running dialog back.
 
-Build the jar with a network connection; Gradle fetches the JDK it needs:
+Building needs a network connection and nothing else -- Gradle downloads both
+the JDK it runs on and the one it compiles against:
 
 ```sh
 cd mod
@@ -86,7 +87,7 @@ One `./gradlew build` builds both jars. Everything but the entry point is plain
 Minecraft code, so both loader projects compile the same sources out of
 `mod/common/` and only their manifest and their one entry-point class differ.
 
-Built against Minecraft 26.2, Fabric API 0.158.0 and NeoForge 26.2.0.75; the
+Built against Minecraft 26.3, Fabric API 0.160.6 and NeoForge 26.3.0.3-beta; the
 versions live in `mod/gradle.properties`.
 
 ## How it works
