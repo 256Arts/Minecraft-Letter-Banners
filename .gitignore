@@ -1,1 +1,6 @@
 dist/
+
+# Build products, agent scratchpad, macOS
+build/
+.context/
+.DS_Store
