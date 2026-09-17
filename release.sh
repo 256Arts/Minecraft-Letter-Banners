@@ -4,11 +4,11 @@
 # that run. Bump `version` and push to main first. Run from the repo root.
 set -eu
 
-git fetch -q --tags origin
+git fetch -q origin main
 version=$(sed -n 's/^version=//p' mod/gradle.properties)
 tag="v$version"
 
-git rev-parse -q --verify "refs/tags/$tag" >/dev/null &&
+git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null &&
   { echo "$tag already exists -- bump version in mod/gradle.properties" >&2; exit 1; }
 [ -z "$(git rev-list origin/main..HEAD)" ] ||
   { echo "HEAD has commits not on origin/main -- push them first" >&2; exit 1; }
