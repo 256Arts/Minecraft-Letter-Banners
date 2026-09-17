@@ -77,6 +77,8 @@ dialog that gives alphabet banners built from vanilla banner patterns.
   builds both jars, zips `pack.mcmeta` + `data/` beside them, and mc-publish ships
   all three to GitHub Releases, Modrinth and CurseForge. Version and game versions
   are read from `mod/gradle.properties`, and the tag has to match `version` there.
+  `release.sh` (the `Release` Conductor run script) tags `origin/main` with it,
+  pushes, and watches the run; it refuses a version that is already tagged.
   Running the workflow by hand (`workflow_dispatch`) publishes the data pack alone
   -- every other step is gated on `github.event_name == 'push'` -- so a release
   whose data pack step failed can be finished without re-uploading the rest.

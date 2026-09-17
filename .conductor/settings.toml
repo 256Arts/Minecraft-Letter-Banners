@@ -8,3 +8,8 @@ command = "sh install-in-modrinth.sh"
 available_in = [ "local" ]
 default = true
 icon = "package-plus"
+
+[scripts.run.Release]
+command = "sh release.sh"
+available_in = [ "local" ]
+icon = "rocket"
