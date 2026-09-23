@@ -15,7 +15,8 @@ mods="$HOME/Library/Application Support/ModrinthApp/profiles/$profile/mods"
 
 # gradle.properties is the single source of truth for the mod version.
 version=$(sed -n 's/^version=//p' mod/gradle.properties)
-jar="mod/$loader/build/libs/letter-banners-$loader-$version.jar"
+minecraft=$(sed -n 's/^minecraft_version=//p' mod/gradle.properties)
+jar="mod/$loader/build/libs/letter-banners-$loader-$version+$minecraft.jar"
 
 # Drop every old build, including .disabled ones, so no duplicate mod id loads. Both
 # loaders' jars go, so switching loaders never leaves the other one behind.

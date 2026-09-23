@@ -69,7 +69,7 @@ jobs:
       - name: Zip the data pack
         run: |
           mkdir -p dist
-          zip -r "dist/letter-banners-datapack-${{ steps.properties.outputs.version }}.zip" \
+          zip -r "dist/letter-banners-datapack-${{ steps.properties.outputs.version }}+${{ steps.properties.outputs.minecraft }}.zip" \
             pack.mcmeta LICENSE data -x '*.DS_Store'
 
       # One GitHub release holding everything. Modrinth and CurseForge get a

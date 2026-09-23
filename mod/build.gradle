@@ -11,6 +11,12 @@ subprojects {
 		archivesName = "letter-banners-${project.name}"
 	}
 
+	// The newest Minecraft version the build targets goes in every file name
+	// (`letter-banners-fabric-1.1.0+26.3.jar`), so a download says what it runs on.
+	tasks.withType(Jar).configureEach {
+		archiveVersion = "${project.version}+${project.minecraft_version}"
+	}
+
 	sourceSets.main.java.srcDir rootProject.file('common/src/main/java')
 	sourceSets.main.resources.srcDir rootProject.file('common/src/main/resources')
 
